@@ -1,0 +1,20 @@
+To start a local server:
+php artisan serve
+
+To add new models in the database:
+php artisan migrate
+
+To reset the database
+php artisan migrate:refresh
+
+For seeding of database
+Php artisan tinker
+
+For creating data in tinker:
+$threads->each(function ($thread){ factory('App\Reply',10)->create(['thread_id' => $thread->id]);});
+
+To make a reply model with migration and controller
+php artisan make:model Reply -mc
+
+To create unit tests command line
+php artisan make:test ReplyTest --unit
