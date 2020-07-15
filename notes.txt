@@ -18,3 +18,7 @@ php artisan make:model Reply -mc
 
 To create unit tests command line
 php artisan make:test ReplyTest --unit
+
+
+Test individual tests
+vendor/bin/phpunit --filter test_a_thread_has_a_creator

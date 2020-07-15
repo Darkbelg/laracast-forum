@@ -50,6 +50,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        //temp
+        //if (app()->environment() === 'testing') throw $exception;
+
         return parent::render($request, $exception);
     }
 }
