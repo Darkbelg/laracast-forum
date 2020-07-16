@@ -26,7 +26,7 @@
 
     @auth
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-8 mt-3">
             <form method="POST" action="{{ $thread->path() . '/replies'}}">
                 {{ csrf_field() }}
 
@@ -35,7 +35,7 @@
                         rows="5"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-default">Post</button>
+                <button type="submit" class="btn btn-primary">Post</button>
             </form>
         </div>
     </div>
