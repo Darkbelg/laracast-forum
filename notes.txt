@@ -10,7 +10,10 @@ php artisan migrate:refresh
 For seeding of database
 Php artisan tinker
 
-For creating data in tinker:
+For createing threads in tinker and adding them to the $threads variable
+$threads = factory('App\Thread',50)->create();
+
+For creating replies to threads in tinker:
 $threads->each(function ($thread){ factory('App\Reply',10)->create(['thread_id' => $thread->id]);});
 
 To make a reply model with migration and controller
