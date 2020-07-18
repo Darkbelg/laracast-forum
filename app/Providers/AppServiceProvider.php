@@ -24,12 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->share('channels', Channel::all());
+        //view()->share('channels', Channel::all());
 
-        /* add variable to individual views
-        view()->composer('threads.create', function ($view) {
-            $view->with('channels',\App\Channel::all());
+        // add variable to all views
+        view()->composer('*', function ($view) {
+            $view->with('channels', Channel::all());
         });
-        */
     }
 }
