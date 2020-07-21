@@ -1,12 +1,12 @@
 <?php
 
-function create($class,$attributes = [])
+function create($class, $attributes = [], $amount = null)
 {
-    return factory($class)->create($attributes);
+    return factory($class, $amount)->create($attributes);
 }
 
 
-function make($class,$attributes = [])
+function make($class, $attributes = [])
 {
     return factory($class)->make($attributes);
 }
