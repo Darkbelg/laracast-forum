@@ -19,6 +19,9 @@ class CreateRepliesTable extends Migration
             $table->integer('user_id');
             $table->text('body');
             $table->timestamps();
+
+            //Foreign key delete
+            // $table->foreign('thread_id')->onDelete('cas');
         });
     }
 
