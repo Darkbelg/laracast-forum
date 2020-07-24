@@ -4,9 +4,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">
-                    <a href="#">{{$thread->creator->name}}</a> posted:
+                    <a href="{{ route('profile',$thread->creator->name)}}">{{$thread->creator->name}}</a> posted:
                     {{ $thread->title }}
                 </div>
 
@@ -42,7 +42,7 @@
                 <div class="card-body">
                     <p>
                         This thread was published {{ $thread->created_at->diffForHumans()}} by
-                        <a href="#"> {{$thread->creator->name }}</a>, and currently has {{ $thread->replies_count}}
+                        <a href="{{ route('profile',$thread->creator->name)}}"> {{$thread->creator->name }}</a>, and currently has {{ $thread->replies_count}}
                         {{ Str::plural('comment', $thread->replies_count)}}.
                     </p>
                 </div>
