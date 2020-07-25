@@ -16,7 +16,7 @@
                     <div class="level">
                         <span class="flex">
                             <a href="{{ route('profile',$thread->creator->name)}}">{{ $thread->creator->name }}</a> posted:
-                            {{$thread->title}}
+                            <a href="{{$thread->path() }}">{{$thread->title}}</a>
                         </span>
                         <span>{{$thread->created_at->diffForHumans()}}</span>
                     </div>
