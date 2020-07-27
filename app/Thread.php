@@ -5,9 +5,11 @@ namespace App;
 use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
 
 class Thread extends Model
 {
+    use RecordsActivity;
 
     protected $guarded = [];
 
@@ -24,6 +26,11 @@ class Thread extends Model
         static::deleting(function ($thread){
             $thread->replies()->delete();
         });
+
+        // Uses trait RecordsActivity replaced this function with bootRecordsActivity()
+        // static::created(function($thread){
+        //     $thread->recordActivity('created');
+        // });
     }
 
     public function path()
