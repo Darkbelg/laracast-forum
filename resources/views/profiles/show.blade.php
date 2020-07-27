@@ -16,7 +16,6 @@
                 @endforeach
             @endforeach
         
-            {{-- {{ $threads->links() }} --}}
         </div>
         </div>
     </div>
