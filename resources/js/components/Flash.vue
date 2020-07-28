@@ -24,13 +24,17 @@ export default {
     // window.events.$on('flash', message => {
     //     this.flash(message);
     // })
-    window.events.$on('flash', this.flash(message));
+    window.events.$on(
+      'flash', message => this.flash(message)
+      );
   },
 
   methods: {
     flash(message) {
       this.body = message;
       this.show = true;
+
+      this.hide();
     },
 
     hide() {

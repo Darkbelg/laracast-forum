@@ -1924,6 +1924,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    var _this = this;
+
     if (this.message) {
       this.flash(this.message);
     } // window.events.$on('flash', message => {
@@ -1931,18 +1933,21 @@ __webpack_require__.r(__webpack_exports__);
     // })
 
 
-    window.events.$on('flash', this.flash(message));
+    window.events.$on('flash', function (message) {
+      return _this.flash(message);
+    });
   },
   methods: {
     flash: function flash(message) {
       this.body = message;
       this.show = true;
+      this.hide();
     },
     hide: function hide() {
-      var _this = this;
+      var _this2 = this;
 
       setTimeout(function () {
-        _this.show = false;
+        _this2.show = false;
       }, 3000);
     }
   }
