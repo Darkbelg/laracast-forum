@@ -28,6 +28,15 @@ class RepliesController extends Controller
         return back()->with('flash','Your reply has been left.');
     }
 
+    public function update(Reply $reply)
+    {
+        $this->authorize('update',$reply);
+
+        $this->validate(request(), ['body' => 'required']); 
+
+        $reply->update(['body' => request('body')]);
+    }
+
     public function destroy(Reply $reply)
     {
         /*
@@ -40,13 +49,10 @@ class RepliesController extends Controller
 
         $reply->delete();
 
+        if(request()->expectsJson()) {
+            return response(['status' => 'Reply deleted']);
+        }
+
         return back();
-    }
-
-    public function update(Reply $reply)
-    {
-        $this->authorize('update',$reply);
-
-        $reply->update(['body' => request('body')]);
     }
 }

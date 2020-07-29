@@ -1,4 +1,4 @@
-<reply :attributes="{{ $reply }}" inline-template v-cloack>
+<reply :attributes="{{ $reply }}" inline-template v-cloak>
     <div id="reply-{{ $reply->id }}" class="card mb-3">
         <div class="card-header">
             <div class="level">
@@ -31,12 +31,7 @@
         @can('update',$reply)
         <div class="card-footer level">
             <button class="btn btn-info button-small mr-1" @click="editing = true">Edit</button>
-            <form action="/replies/{{ $reply->id }}" method="post">
-                {{ csrf_field() }}
-                {{ method_field('DELETE') }}
-
-                <button type="submit" class="btn btn-danger button-small">Delete</button>
-            </form>
+            <button class="btn btn-danger button-small" @click="destroy">Delete</button>
         </div>
         @endcan
     </div>
