@@ -33,6 +33,10 @@
         .flex {
             flex: 1;
         }
+
+        [v-cloack] {
+            display: none;
+        }
     </style>
 </head>
 

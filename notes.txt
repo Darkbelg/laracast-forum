@@ -25,3 +25,6 @@ php artisan make:test ReplyTest --unit
 
 Test individual tests
 vendor/bin/phpunit --filter test_a_thread_has_a_creator
+
+Adds json to the vue template
+<reply :attributes="{{ $reply }}" inline-template>
