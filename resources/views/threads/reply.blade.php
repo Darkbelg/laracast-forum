@@ -7,13 +7,15 @@
                     {{ $reply->created_at->diffForHumans() }} ...
                 </h5>
                 <div>
+                    @auth
                     <favorite :reply="{{ $reply }}"></favorite>
                     {{-- <form action="/replies/{{$reply->id}}/favorites" method="post">
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-secondary" {{ $reply->isFavorited() ? 'disabled' : ''}}>
-                            {{ $reply->favorites_count }} {{ Str::plural('Favorite', $reply->favorites_count )}}
-                        </button>
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-secondary" {{ $reply->isFavorited() ? 'disabled' : ''}}>
+                        {{ $reply->favorites_count }} {{ Str::plural('Favorite', $reply->favorites_count )}}
+                    </button>
                     </form> --}}
+                    @endauth
                 </div>
             </div>
         </div>
