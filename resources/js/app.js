@@ -8,6 +8,13 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+window.Vue.prototype.authorize = function (handler){
+    // Here you can add additional admin priveleges.
+    let user = window.App.user;
+
+    return user ? handler(user) : false;
+}
+
 window.events = new Vue(); // vue.$emit
 
 window.flash = function (message) {
@@ -26,8 +33,13 @@ window.flash = function (message) {
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+//These are global components
 Vue.component('flash', require('./components/Flash.vue').default);
-Vue.component('reply', require('./components/Reply.vue').default);
+
+Vue.component('thread-view', require('./pages/Thread.vue').default);
+
+//No need for this to be global.
+//Vue.component('reply', require('./components/Reply.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
