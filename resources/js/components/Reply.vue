@@ -3,8 +3,8 @@
         <div class="card-header">
             <div class="level">
                 <h5 class="flex">
-                    <a :href="'/profiles/'+name" v-text="name"></a> said
-                    {{ data.created_at }} ...
+                    <a :href="'/profiles/'+name" v-text="name"></a>
+                    said <span v-text="ago"></span>
                     <!-- Moment JS can be used for date formatting. -->
                 </h5>
                 <div v-if="signedIn">
@@ -33,6 +33,7 @@
 
 <script>
     import Favorite from './Favorite.vue';
+    import moment from 'moment';
 
     export default {
         props: ['data'],
@@ -49,6 +50,10 @@
         },
 
         computed: {
+            ago(){
+                return moment(this.data.created_at).fromNow() + '...';
+            },
+
             signedIn(){
                 return window.App.signedIn;
             },

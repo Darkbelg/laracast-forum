@@ -35,6 +35,7 @@ window.flash = function (message) {
 
 //These are global components
 Vue.component('flash', require('./components/Flash.vue').default);
+Vue.component('paginator', require('./components/Paginator.vue').default);
 
 Vue.component('thread-view', require('./pages/Thread.vue').default);
 
