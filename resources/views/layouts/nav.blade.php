@@ -24,6 +24,7 @@
                             href="/threads?by={{ auth()->user()->name }}">{{ __('My threads') }}</a>
                         @endauth
                         <a class="nav-link" href="/threads?popular=1">{{ __('Popular Threads') }}</a>
+                        <a class="nav-link" href="/threads?unanswered=1">{{ __('Unanswered Threads') }}</a>
                     </div>
                 </li>
 
