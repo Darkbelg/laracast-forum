@@ -22,7 +22,7 @@ class SubsrcribeToThreadsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->post($thread->path() . '/subscriptions');
 
-        $this->assertCount(1, $thread->subscriptions);
+        $this->assertCount(1, $thread->fresh()->subscriptions);
     }
 
     public function test_a_user_can_unsubscribe_from_threads()

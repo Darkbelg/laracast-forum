@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Filters\ThreadFilters;
+use App\Notifications\ThreadWasUpdated;
 use App\ThreadSubscription;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -57,7 +58,29 @@ class Thread extends Model
 
     public function addReply($reply)
     {
-        return $this->replies()->create($reply);
+        $reply = $this->replies()->create($reply);
+
+        $this->subscriptions
+            ->filter(function ($sub) use ($reply) {
+                return $sub->user_id != $reply->user_id;
+            })
+            ->each->notify($reply);
+        /* We can make this shorter and us a higher order collection
+        ->each(function ($sub) use($reply){
+            $sub->user->notify(new ThreadWasUpdated($this,$reply));
+        });
+        */
+
+        /*
+        This is not a collection approach 
+        foreach($this->subscriptions as $subscription){
+            if($subscription->user_id != $reply->user_id){
+                $subscription->user->notify(new ThreadWasUpdated($this,$reply));
+            }
+         }
+         */
+
+        return $reply;
     }
 
     public function scopeFilter($query, ThreadFilters $filters)
@@ -70,6 +93,8 @@ class Thread extends Model
         $this->subscriptions()->create([
             'user_id' => $userId ?: auth()->id()
         ]);
+
+        return $this;
     }
 
     public function unsubscribe($userId = null)
