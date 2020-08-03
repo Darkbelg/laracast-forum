@@ -14,13 +14,15 @@ class Thread extends Model
 
     protected $guarded = [];
 
-    protected $with = ['creator','channel'];
+    protected $with = ['creator', 'channel'];
+
+    protected $appends = ['isSubscribedTo'];
 
     protected static function boot()
     {
         parent::boot();
 
-        static::deleting(function ($thread){
+        static::deleting(function ($thread) {
             $thread->replies->each->delete();
             // $thread->replies->each(function ($reply){
             //     $reply->delete();
@@ -52,7 +54,7 @@ class Thread extends Model
     {
         return $this->belongsTo(Channel::class);
     }
-    
+
     public function addReply($reply)
     {
         return $this->replies()->create($reply);
@@ -73,12 +75,19 @@ class Thread extends Model
     public function unsubscribe($userId = null)
     {
         $this->subscriptions()
-        ->where('user_id' , $userId ?: auth()->id())
-        ->delete();
+            ->where('user_id', $userId ?: auth()->id())
+            ->delete();
     }
 
     public function subscriptions()
     {
         return $this->hasMany(ThreadSubscription::class);
+    }
+
+    public function getIsSubscribedToAttribute()
+    {
+        return $this->subscriptions()
+            ->where('user_id', auth()->id())
+            ->exists();
     }
 }
