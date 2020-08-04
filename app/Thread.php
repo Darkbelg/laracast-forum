@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\ThreadHasNewReply;
 use App\Filters\ThreadFilters;
 use App\Notifications\ThreadWasUpdated;
 use App\ThreadSubscription;
@@ -60,29 +61,21 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        $this->subscriptions
-            ->filter(
-                function ($sub) use ($reply) {
-                    return $sub->user_id != $reply->user_id;
-                })
-            ->each
-            ->notify($reply);
-        /* We can make this shorter and us a higher order collection
-        ->each(function ($sub) use($reply){
-            $sub->user->notify(new ThreadWasUpdated($this,$reply));
-        });
-        */
+        $this->notifySubscribers($reply);
 
-        /*
-        This is not a collection approach 
-        foreach($this->subscriptions as $subscription){
-            if($subscription->user_id != $reply->user_id){
-                $subscription->user->notify(new ThreadWasUpdated($this,$reply));
-            }
-         }
-         */
+        //do the following if you have a bunch of different methodes being called below each other.
+        // event(new ThreadHasNewReply($this,$reply));
 
         return $reply;
+    }
+
+    public function notifySubscribers($reply)
+    {
+        // Prepare notifications for all subscribers
+        $this->subscriptions
+            ->where('user_id', '!=', $reply->user_id)
+            ->each
+            ->notify($reply);
     }
 
     public function scopeFilter($query, ThreadFilters $filters)
