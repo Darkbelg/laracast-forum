@@ -12,37 +12,48 @@ class RepliesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth',['except' => 'index']);
+        $this->middleware('auth', ['except' => 'index']);
     }
 
     public function index($channelId, Thread $thread)
     {
-        return $thread->replies()->paginate(20);    
+        return $thread->replies()->paginate(20);
     }
 
-    public function store($channelId , Thread $thread)
+    public function store($channelId, Thread $thread)
     {
-        $this->validateReply();
 
-        $reply = $thread->addReply([
-            'body' => request('body'),
-            'user_id' => auth()->id()
-        ]);
+        try {
+            $this->validateReply();
 
-        if(request()->expectsJson()) {
+            $reply = $thread->addReply([
+                'body' => request('body'),
+                'user_id' => auth()->id()
+            ]);
+        } catch (\Exception $e) {
+            return response('Sorry, your reply could not be processed at this time.', 422);
+        }
+
+        if (request()->expectsJson()) {
             return $reply->load('owner');
         }
 
-        return back()->with('flash','Your reply has been left.');
+        return back()->with('flash', 'Your reply has been left.');
     }
 
     public function update(Reply $reply)
     {
-        $this->authorize('update',$reply);
+        $this->authorize('update', $reply);
 
+        try{
         $this->validateReply();
 
         $reply->update(['body' => request('body')]);
+        } catch (\Exception $e){
+            return response(
+                'Sorry, your reply could not be saved ath this time.', 422
+            );
+        }
     }
 
     public function destroy(Reply $reply)
@@ -53,18 +64,19 @@ class RepliesController extends Controller
          }
          This can be replaced by:
         */
-        $this->authorize('update',$reply);
+        $this->authorize('update', $reply);
 
         $reply->delete();
 
-        if(request()->expectsJson()) {
+        if (request()->expectsJson()) {
             return response(['status' => 'Reply deleted']);
         }
 
         return back();
     }
 
-    protected function validateReply(){
+    protected function validateReply()
+    {
         $this->validate(request(), [
             'body' => 'required'
         ]);
