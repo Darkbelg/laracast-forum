@@ -6,6 +6,7 @@ use App\Reply;
 use App\Rules\SpamFree;
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class RepliesController extends Controller
 {
@@ -24,6 +25,12 @@ class RepliesController extends Controller
     {
 
         try {
+            if(Gate::denies('create', new Reply)) {
+                return response(
+                    'You are posting too frequently. Please take a break. :>', 422
+                );
+            }
+            $this->authorize('create', new Reply());
             request()->validate([
                 'body' => ['required', new SpamFree]
             ]);
@@ -40,7 +47,8 @@ class RepliesController extends Controller
             return $reply->load('owner');
         }
 
-        return back()->with('flash', 'Your reply has been left.');
+        return $reply->load('owner');
+        //return back()->with('flash', 'Your reply has been left.');
     }
 
     public function update(Reply $reply)

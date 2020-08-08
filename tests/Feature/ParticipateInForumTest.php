@@ -36,7 +36,7 @@ class ParticipateInForumTest extends TestCase
         //The following lines fail because we use vue components now
         // $this->get($thread->path())
         //     ->assertSee($reply->body);
-        $this->assertDatabaseHas('replies',['body' => $reply->body]);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
         $this->assertEquals(1, $thread->fresh()->replies_count);
     }
 
@@ -46,11 +46,10 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
 
         $thread = create('App\Thread');
-        $reply = make('App\Reply',['body' => null]);
+        $reply = make('App\Reply', ['body' => null]);
 
         $this->post($thread->path() . '/replies', $reply->toArray())
-            ->assertSessionHasErrors('body');
-
+            ->assertStatus(422);
     }
 
     public function test_unauthorized_users_cannot_delete_reply()
@@ -82,7 +81,7 @@ class ParticipateInForumTest extends TestCase
     public function test_authorized_users_can_delete_replies()
     {
         $this->signIn();
-        $reply = create('App\Reply',['user_id' => auth()->id()]);
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
 
         $this->delete("/replies/{$reply->id}")->assertStatus(302);
 
@@ -95,7 +94,7 @@ class ParticipateInForumTest extends TestCase
     {
         $this->signIn();
 
-        $reply = create('App\Reply',['user_id' => auth()->id()]);
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
 
         $updatedReply = 'You been changed, fool.';
 
@@ -110,12 +109,23 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
 
         $thread = create('App\Thread');
-        $reply = make('App\Reply',['body' => 'Yahoo customer support']);
+        $reply = make('App\Reply', ['body' => 'Yahoo customer support']);
 
         $this->withoutExceptionHandling();
-        $this->expectException(\Exception::class);
 
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
 
+    public function test_users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $this->signIn();
+
+        $thread = create('App\Thread');
+        $reply = make('App\Reply');
+
+        $this->withoutExceptionHandling();
+        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(201);
+        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(422);
     }
 }
