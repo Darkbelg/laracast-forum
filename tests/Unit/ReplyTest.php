@@ -11,7 +11,7 @@ class ReplyTest extends TestCase
 
     use DatabaseMigrations;
 
-    
+
     public function test_it_has_an_owner()
     {
         $reply = create('App\Reply');
@@ -27,5 +27,15 @@ class ReplyTest extends TestCase
 
         $reply->created_at = Carbon::now()->subMonth();
 
-        $this->assertFalse($reply->wasJustPublished());    }
+        $this->assertFalse($reply->wasJustPublished());
+    }
+
+    public function test_it_can_detect_all_mentioned_users_in_the_body()
+    {
+        $reply = create('App\Reply',[
+            'body' => '@JaneDoe wants to talk to @JohnDoe'
+            ]);
+
+        $this->assertEquals(['JaneDoe','JohnDoe'], $reply->mentionedUsers());
+    }
 }

@@ -14,6 +14,6 @@ class NotifyThreadSubscribers
      */
     public function handle(ThreadHasNewReply $event)
     {
-        $event->thread->notifySubscribers($event->reply);
+        $event->reply->thread->notifySubscribers($event->reply);
     }
 }

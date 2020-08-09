@@ -61,10 +61,7 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        $this->notifySubscribers($reply);
-
-        //do the following if you have a bunch of different methodes being called below each other.
-        // event(new ThreadHasNewReply($this,$reply));
+        event(new ThreadHasNewReply($reply));
 
         return $reply;
     }
