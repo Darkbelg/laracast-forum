@@ -2259,10 +2259,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['data'],
+  props: ["data"],
   components: {
     Favorite: _Favorite_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -2276,7 +2279,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     ago: function ago() {
-      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.data.created_at).fromNow() + '...';
+      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.data.created_at).fromNow() + "...";
     },
     signedIn: function signedIn() {
       return window.App.signedIn;
@@ -2291,18 +2294,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     update: function update() {
-      axios.patch('/replies/' + this.data.id, {
+      axios.patch("/replies/" + this.data.id, {
         body: this.body
       })["catch"](function (error) {
-        flash(error.response.data, 'danger');
+        flash(error.response.data, "danger");
       });
       this.editing = false;
-      flash('Updated');
+      flash("Updated");
     },
     destroy: function destroy() {
-      axios["delete"]('/replies/' + this.data.id); //emit is a event
+      axios["delete"]("/replies/" + this.data.id); //emit is a event
 
-      this.$emit('deleted', this.data.id); // $(this.$el).fadeOut(300, () => {
+      this.$emit("deleted", this.data.id); // $(this.$el).fadeOut(300, () => {
       //     flash('Your reply has been deleted');
       // });
     }
@@ -60150,7 +60153,7 @@ var render = function() {
               attrs: { href: "/profiles/" + _vm.name },
               domProps: { textContent: _vm._s(_vm.name) }
             }),
-            _vm._v("\n                said "),
+            _vm._v("\n        said\n        "),
             _c("span", { domProps: { textContent: _vm._s(_vm.ago) } })
           ]),
           _vm._v(" "),
@@ -60163,50 +60166,49 @@ var render = function() {
       _c("div", { staticClass: "card-body" }, [
         _vm.editing
           ? _c("div", [
-              _c("div", { staticClass: "form-group" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.body,
-                      expression: "body"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  domProps: { value: _vm.body },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+              _c("form", { on: { submit: _vm.update } }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.body,
+                        expression: "body"
                       }
-                      _vm.body = $event.target.value
+                    ],
+                    staticClass: "form-control",
+                    attrs: { required: "" },
+                    domProps: { value: _vm.body },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.body = $event.target.value
+                      }
                     }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn button-small btn-primary",
-                  on: { click: _vm.update }
-                },
-                [_vm._v("Update")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn button-small btn-link",
-                  on: {
-                    click: function($event) {
-                      _vm.editing = false
+                  })
+                ]),
+                _vm._v(" "),
+                _c("button", { staticClass: "btn button-small btn-primary" }, [
+                  _vm._v("Update")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn button-small btn-link",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.editing = false
+                      }
                     }
-                  }
-                },
-                [_vm._v("Cancel")]
-              )
+                  },
+                  [_vm._v("Cancel")]
+                )
+              ])
             ])
           : _c("div", { domProps: { textContent: _vm._s(_vm.body) } })
       ]),
