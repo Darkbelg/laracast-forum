@@ -46,6 +46,8 @@
             'signedIn' => Auth::check()
         ]) !!};
     </script>
+
+    @yield('header')
 </head>
 
 <body>
