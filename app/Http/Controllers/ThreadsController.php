@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Filters\ThreadFilters;
-use App\Thread;
 use App\Channel;
 use App\Rules\SpamFree;
+use App\Thread;
 use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
@@ -23,10 +22,9 @@ class ThreadsController extends Controller
      */
     public function index(Channel $channel, ThreadFilters $filters)
     {
+        $threads = $this->getThreads($channel, $filters);
 
-        $threads = $this->getThreads($channel,$filters);
-
-        if(request()->wantsJson()){
+        if (request()->wantsJson()) {
             return $threads;
         }
 
@@ -51,7 +49,6 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
-
         request()->validate([
             'title' => ['required', new SpamFree],
             'body' => ['required', new SpamFree],
@@ -85,13 +82,13 @@ class ThreadsController extends Controller
      */
     public function show($channel, Thread $thread)
     {
-        if(auth()->check()){
+        if (auth()->check()) {
             auth()->user()->read($thread);
         }
      
         return view('threads.show', compact('thread'));
 
-        // return view('threads.show', 
+        // return view('threads.show',
         // [
         //     'thread' => $thread,
         //     'replies' => $thread->replies()->paginate(20)
@@ -127,16 +124,15 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy($channel ,Thread $thread)
+    public function destroy($channel, Thread $thread)
     {
-
-        $this->authorize('update',$thread);
+        $this->authorize('update', $thread);
 
         //$thread->replies()->delete();
         $thread->delete();
 
-        if(request()->wantsJson()){
-            return response([],204);
+        if (request()->wantsJson()) {
+            return response([], 204);
         }
 
         return redirect('/threads');
@@ -148,7 +144,7 @@ class ThreadsController extends Controller
         $threads = Thread::latest()->filter($filters);
 
         if ($channel->exists) {
-            $threads->where('channel_id',$channel->id);
+            $threads->where('channel_id', $channel->id);
         }
 
         //dd($threads->toSql());

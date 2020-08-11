@@ -10,13 +10,14 @@ class ThreadWasUpdated extends Notification
 {
     use Queueable;
 
-    protected $thread,$reply;
+    protected $thread;
+    protected $reply;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($thread,$reply)
+    public function __construct($thread, $reply)
     {
         $this->thread = $thread;
         $this->reply = $reply;

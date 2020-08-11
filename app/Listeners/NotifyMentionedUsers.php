@@ -8,7 +8,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\Notifications\YouWereMentioned;
 use App\User;
 
-
 class NotifyMentionedUsers
 {
     /**
@@ -21,7 +20,7 @@ class NotifyMentionedUsers
     {
         User::whereIn('name', $event->reply->mentionedUsers())
             ->get()
-            ->each(fn($user)=>[
+            ->each(fn ($user) =>[
                 $user->notify(new YouWereMentioned($event->reply))
             ]);
     }

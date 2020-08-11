@@ -2,13 +2,13 @@
 
 namespace App\Filters;
 
-Use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
-abstract class Filters 
+abstract class Filters
 {
-  /**
-     * @var Request
-     */
+    /**
+       * @var Request
+       */
     protected $request;
 
     /**

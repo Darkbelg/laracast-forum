@@ -32,7 +32,7 @@ class ThreadFilters extends Filters
         //old: return $this->builder->orderBy('replies_count','desc');
 
         //new:
-        return $this->builder->reorder('replies_count','desc');
+        return $this->builder->reorder('replies_count', 'desc');
     }
 
     protected function unanswered()

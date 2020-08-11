@@ -4,8 +4,8 @@ namespace App\Inspections;
 
 use Exception;
 
-class InvalidKeywords {
-
+class InvalidKeywords
+{
     protected $keywords = [
         'yahoo customer support'
     ];

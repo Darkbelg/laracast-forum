@@ -19,7 +19,8 @@ class CreatePostRequest extends FormRequest
         return Gate::allows('create', new \App\Reply);
     }
 
-    protected function failedAuthorization(){
+    protected function failedAuthorization()
+    {
         throw new ThrottleException(
             'You are replying too frequently. Please take a break.'
         );
