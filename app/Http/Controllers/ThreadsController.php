@@ -137,7 +137,7 @@ class ThreadsController extends Controller
 
         return redirect('/threads');
     }
-
+ 
     protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
         // filter() references scopeFilter() in Thread model;
@@ -149,6 +149,6 @@ class ThreadsController extends Controller
 
         //dd($threads->toSql());
 
-        return $threads->get();
+        return $threads->paginate(25);
     }
 }

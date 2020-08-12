@@ -1,0 +1,3 @@
+{
+    "php-cs-fixer.executable": "/home/stijn/.composer/vendor/bin/php-cs-fixer"
+}
