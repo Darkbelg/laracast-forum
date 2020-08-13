@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -72,9 +73,6 @@ class User extends Authenticatable
 
     public function getAvatarPathAttribute($avatar)
     {
-        if (! $avatar) {
-            return '/storage/avatars/default.jpg';
-        }
-        return '/storage/' . $avatar;
+		return asset(Storage::url($avatar ?: 'avatars/default.png'));
     }
 }

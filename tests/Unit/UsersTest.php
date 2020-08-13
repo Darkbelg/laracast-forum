@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class UsersTest extends TestCase
@@ -22,10 +23,10 @@ class UsersTest extends TestCase
     {
         $user = create('App\User');
 
-        $this->assertEquals('/storage/avatars/default.jpg', $user->avatar_path);
+        $this->assertEquals(asset(Storage::url('avatars/default.png')), $user->avatar_path);
 
         $user->avatar_path = 'avatars/me.jpg';
 
-        $this->assertEquals('/storage/avatars/me.jpg', $user->avatar_path);
+        $this->assertEquals(asset(Storage::url('avatars/me.jpg')), $user->avatar_path);
     }
 }

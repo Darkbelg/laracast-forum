@@ -34,3 +34,29 @@ npm run dev
 
 To watch the assets:
 npm run watch
+
+disable redis at boot:
+sudo systemctl disable redis
+
+Bootup redis
+sudo systemctl start redis-server.service
+
+status redis
+sudo systemctl status redis-server.service
+
+To enter redis:
+redis-cli
+
+To create a key and increment it.
+zincrby 'trending_threads' 100 'some thread title'
+
+To show all values from a key asc
+zrange 'trending_threads' 0 -1
+
+To show all values from a key desc
+zrevrange 'trending_threads' 0 -1 WITHSCORES
+
+WHITSCORES is to shhow the number of increments of a value.
+
+To delete redis keys
+del trending_threads
