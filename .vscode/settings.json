@@ -1,3 +1,4 @@
 {
-    "php-cs-fixer.executable": "/home/stijn/.composer/vendor/bin/php-cs-fixer"
+    "php-cs-fixer.executable": "/home/stijn/.composer/vendor/bin/php-cs-fixer",
+    "intelephense.references.exclude": []
 }
