@@ -8,6 +8,7 @@ use App\Notifications\ThreadWasUpdated;
 use App\ThreadSubscription;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Thread extends Model
 {
@@ -117,5 +118,28 @@ class Thread extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function setSlugAttribute($value)
+    {
+        if (static::whereSlug($slug = Str::slug($value))->exists()) {
+            $slug = $this->incrementSlug($slug);
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    public function incrementSlug($slug)
+    {
+        // Reference:
+        // \Thread::whereTitle('Help Me')->latest('id')->value('slug');
+        $max = static::whereTitle($this->title)->latest('id')->value('slug'); // foo-title-5, foo-title
+
+        if(is_numeric($max[-1])){
+            return preg_replace_callback('/(\d+)$/', function($matches){
+                return $matches[1] + 1;
+            }, $max);
+        }
+        return "{$slug}-2";
     }
 }

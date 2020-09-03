@@ -60,3 +60,6 @@ WHITSCORES is to shhow the number of increments of a value.
 
 To delete redis keys
 del trending_threads
+
+When you just went to return all the values in tinker:
+App\Thread::whereTitle('Help Me')->pluck('slug');
