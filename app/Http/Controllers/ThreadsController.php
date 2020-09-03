@@ -8,6 +8,7 @@ use App\Rules\SpamFree;
 use App\Thread;
 use App\Trending;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ThreadsController extends Controller
 {
@@ -72,7 +73,8 @@ class ThreadsController extends Controller
             'user_id' => auth()->id(),
             'channel_id' => request('channel_id'),
             'title' => request('title'),
-            'body' => request('body')
+            'body' => request('body'),
+            'slug' => Str::slug(request('title'))
         ]);
 
         return redirect($thread->path())->with('flash', 'Your thread has been published!');
