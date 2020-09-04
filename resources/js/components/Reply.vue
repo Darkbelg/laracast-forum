@@ -1,6 +1,6 @@
 <template>
   <div :id="'reply-' + id" class="card mb-3">
-    <div class="card-header">
+    <div class="card-header" :class="isBest ? 'alert-success': ''">
       <div class="level">
         <h5 class="flex">
           <a :href="'/profiles/'+name" v-text="name"></a>
@@ -27,9 +27,16 @@
       <div v-else v-html="body"></div>
     </div>
 
-    <div class="card-footer level" v-if="canUpdate">
-      <button class="btn btn-info button-small mr-1" @click="editing = true">Edit</button>
-      <button class="btn btn-danger button-small" @click="destroy">Delete</button>
+    <div class="card-footer level" :class="isBest ? 'alert-success': ''" v-if="canUpdate">
+      <div>
+        <button class="btn btn-info button-small mr-1" @click="editing = true">Edit</button>
+        <button class="btn btn-danger button-small mr-1" @click="destroy">Delete</button>
+      </div>
+      <button
+        class="btn btn-primary button-small ml-auto"
+        @click="markBestReply"
+        v-show="! isBest"
+      >Best Reply?</button>
     </div>
   </div>
 </template>
@@ -49,6 +56,7 @@ export default {
       id: this.data.id,
       name: this.data.owner.name,
       body: this.data.body,
+      isBest: false,
     };
   },
 
@@ -89,6 +97,10 @@ export default {
       // $(this.$el).fadeOut(300, () => {
       //     flash('Your reply has been deleted');
       // });
+    },
+
+    markBestReply() {
+      this.isBest = true;
     },
   },
 };
