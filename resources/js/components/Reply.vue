@@ -28,7 +28,7 @@
     </div>
 
     <div class="card-footer level" :class="isBest ? 'alert-success': ''">
-      <div v-if="authorize('updateReply', reply)"> 
+      <div v-if="authorize('updateReply', reply)">
         <button class="btn btn-info button-small mr-1" @click="editing = true">Edit</button>
         <button class="btn btn-danger button-small mr-1" @click="destroy">Delete</button>
       </div>
@@ -56,7 +56,7 @@ export default {
       id: this.data.id,
       name: this.data.owner.name,
       body: this.data.body,
-      isBest: false,
+      isBest: this.data.isBest,
       reply: this.data,
     };
   },
@@ -65,6 +65,12 @@ export default {
     ago() {
       return moment(this.data.created_at).fromNow() + "...";
     },
+  },
+
+  created() {
+    window.events.$on("best-reply-selected", (id) => {
+      this.isBest = (id === this.id);
+    });
   },
 
   methods: {
@@ -92,7 +98,9 @@ export default {
     },
 
     markBestReply() {
-      this.isBest = true;
+      axios.post("/replies/" + this.data.id + "/best");
+
+      window.events.$emit("best-reply-selected", this.data.id);
     },
   },
 };
