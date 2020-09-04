@@ -3382,11 +3382,6 @@ __webpack_require__.r(__webpack_exports__);
       body: ""
     };
   },
-  computed: {
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    }
-  },
   mounted: function mounted() {
     $("#body").atwho({
       at: "@",
@@ -3623,22 +3618,13 @@ __webpack_require__.r(__webpack_exports__);
       id: this.data.id,
       name: this.data.owner.name,
       body: this.data.body,
-      isBest: false
+      isBest: false,
+      reply: this.data
     };
   },
   computed: {
     ago: function ago() {
       return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.data.created_at).fromNow() + "...";
-    },
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    },
-    canUpdate: function canUpdate() {
-      var _this = this;
-
-      return this.authorize(function (user) {
-        return _this.data.user_id == user.id;
-      }); // return this.data.user_id == window.App.user.id;
     }
   },
   methods: {
@@ -62088,15 +62074,15 @@ var render = function() {
           : _c("div", { domProps: { innerHTML: _vm._s(_vm.body) } })
       ]),
       _vm._v(" "),
-      _vm.canUpdate
-        ? _c(
-            "div",
-            {
-              staticClass: "card-footer level",
-              class: _vm.isBest ? "alert-success" : ""
-            },
-            [
-              _c("div", [
+      _c(
+        "div",
+        {
+          staticClass: "card-footer level",
+          class: _vm.isBest ? "alert-success" : ""
+        },
+        [
+          _vm.authorize("updateReply", _vm.reply)
+            ? _c("div", [
                 _c(
                   "button",
                   {
@@ -62118,27 +62104,27 @@ var render = function() {
                   },
                   [_vm._v("Delete")]
                 )
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              directives: [
                 {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: !_vm.isBest,
-                      expression: "! isBest"
-                    }
-                  ],
-                  staticClass: "btn btn-primary button-small ml-auto",
-                  on: { click: _vm.markBestReply }
-                },
-                [_vm._v("Best Reply?")]
-              )
-            ]
+                  name: "show",
+                  rawName: "v-show",
+                  value: !_vm.isBest,
+                  expression: "! isBest"
+                }
+              ],
+              staticClass: "btn btn-primary button-small ml-auto",
+              on: { click: _vm.markBestReply }
+            },
+            [_vm._v("Best Reply?")]
           )
-        : _vm._e()
+        ]
+      )
     ]
   )
 }
@@ -74433,12 +74419,23 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-window.Vue.prototype.authorize = function (handler) {
-  // Here you can add additional admin priveleges.
-  var user = window.App.user;
-  return user ? handler(user) : false;
+var authorizations = __webpack_require__(/*! ./authorizations */ "./resources/js/authorizations.js");
+
+Vue.prototype.authorize = function () {
+  if (!window.App.signedIn) return false;
+
+  for (var _len = arguments.length, params = new Array(_len), _key = 0; _key < _len; _key++) {
+    params[_key] = arguments[_key];
+  }
+
+  if (typeof params[0] === 'string') {
+    return authorizations[params[0]](params[1]);
+  }
+
+  return params[0](window.App.user);
 };
 
+Vue.prototype.signedIn = window.App.signedIn;
 window.events = new Vue(); // vue.$emit
 
 window.flash = function (message) {
@@ -74477,6 +74474,22 @@ Vue.component('thread-view', __webpack_require__(/*! ./pages/Thread.vue */ "./re
 var app = new Vue({
   el: '#app'
 });
+
+/***/ }),
+
+/***/ "./resources/js/authorizations.js":
+/*!****************************************!*\
+  !*** ./resources/js/authorizations.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var user = window.App.user;
+module.exports = {
+  updateReply: function updateReply(reply) {
+    return reply.user_id === user.id;
+  }
+};
 
 /***/ }),
 

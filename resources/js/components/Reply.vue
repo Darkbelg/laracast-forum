@@ -27,8 +27,8 @@
       <div v-else v-html="body"></div>
     </div>
 
-    <div class="card-footer level" :class="isBest ? 'alert-success': ''" v-if="canUpdate">
-      <div>
+    <div class="card-footer level" :class="isBest ? 'alert-success': ''">
+      <div v-if="authorize('updateReply', reply)"> 
         <button class="btn btn-info button-small mr-1" @click="editing = true">Edit</button>
         <button class="btn btn-danger button-small mr-1" @click="destroy">Delete</button>
       </div>
@@ -57,21 +57,13 @@ export default {
       name: this.data.owner.name,
       body: this.data.body,
       isBest: false,
+      reply: this.data,
     };
   },
 
   computed: {
     ago() {
       return moment(this.data.created_at).fromNow() + "...";
-    },
-
-    signedIn() {
-      return window.App.signedIn;
-    },
-
-    canUpdate() {
-      return this.authorize((user) => this.data.user_id == user.id);
-      // return this.data.user_id == window.App.user.id;
     },
   },
 
