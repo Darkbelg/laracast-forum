@@ -27,6 +27,9 @@ Route::get('/threads/{channel}/{thread}', 'ThreadsController@show');
 Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');
 Route::post('/threads', 'ThreadsController@store')->name('threads')->middleware('verified');
 Route::get('/threads/{channel}', 'ThreadsController@index');
+
+Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
+
 //Route::resource('threads', 'ThreadsController');
 Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index');
 Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
