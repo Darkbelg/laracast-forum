@@ -75,4 +75,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
 		return asset(Storage::url($avatar ?: 'avatars/default.png'));
     }
+
+    public function isAdmin()
+    {
+        return in_array($this->name, ['JohnDoe', 'JaneDoe']);
+    }
 }

@@ -27,6 +27,12 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
+$factory->state(User::class,'administrator', function(){
+    return [
+        'name' => 'JohnDoe'
+    ];
+});
+
 $factory->define(App\Thread::class, function(Faker $faker){
     $title = $faker->sentence;
 
