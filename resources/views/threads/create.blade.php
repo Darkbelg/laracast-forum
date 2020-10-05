@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@push('scripts')
+<!-- captcha Script -->
+<script src="https://www.google.com/recaptcha/api.js"></script>
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -8,31 +13,36 @@
                 <div class="card-header">Create a New Thread</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/threads">
+                    <form method="POST" action="/threads" id="new_thread_form">
                         {{ csrf_field() }}
 
                         <div class="form-group">
                             <label for="channel_id">Choose a channel:</label>
                             <select name="channel_id" id="channel_if" class="form-control" required>
                                 <option value="">Choose One...</option>
-                            @foreach ($channels as $channel)
-                                <option value="{{$channel->id}}" {{ old('channel_id') == $channel->id ? 'selected' : ''}}>{{$channel->name}}</option>
-                            @endforeach
-                        </select>
+                                @foreach ($channels as $channel)
+                                <option value="{{$channel->id}}"
+                                    {{ old('channel_id') == $channel->id ? 'selected' : ''}}>{{$channel->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="title">Title:</label>
-                            <input type="text" class="form-control" id="title" name="title" value="{{old('title')}}" required>
+                            <input type="text" class="form-control" id="title" name="title" value="{{old('title')}}"
+                                required>
                         </div>
 
                         <div class="form-group">
                             <label for="body">Body:</label>
-                            <textarea class="form-control" name="body" id="body" rows="8" required>{{old('body')}}</textarea>
+                            <textarea class="form-control" name="body" id="body" rows="8"
+                                required>{{old('body')}}</textarea>
                         </div>
 
                         <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Publish</button>
+                            {{-- <button type="submit" class="btn btn-primary">Publish</button> --}}
+                            <button class="g-recaptcha btn btn-primary" data-sitekey="6LeYi8kZAAAAAC6kdqKZWHQl8-ycJ1qfQUN5oWeK"
+                                data-callback='onSubmit' data-action='submit'>Publish</button>
                         </div>
 
                         @if (count($errors))
@@ -48,4 +58,11 @@
         </div>
     </div>
 </div>
+@endsection
+@section('footer')
+<script>
+    function onSubmit(token) {
+      document.getElementById("new_thread_form").submit();
+    }
+  </script>
 @endsection
