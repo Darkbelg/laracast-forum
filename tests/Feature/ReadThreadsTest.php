@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp(): void
     {

@@ -11,7 +11,7 @@ use Tests\TestCase;
 class FavoritesTest extends TestCase
 {
 
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_a_guest_can_not_favorite_anything()
     {

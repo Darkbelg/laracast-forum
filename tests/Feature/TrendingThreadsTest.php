@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class TrendingThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {

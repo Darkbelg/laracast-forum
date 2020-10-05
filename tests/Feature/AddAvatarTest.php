@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class AddAvatarTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_only_members_can_add_avatars()
     {

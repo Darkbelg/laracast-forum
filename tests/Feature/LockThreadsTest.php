@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class LockThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_non_administrators_may_not_lock_threads()
     {

@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class ParticipateInForumTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_unauthenticated_user_may_not_add_replies()
     {

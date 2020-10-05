@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class ProfileTest extends TestCase
 {
-     use DatabaseMigrations;
+     use RefreshDatabase;
 
      public function test_a_user_has_a_profile()
      {

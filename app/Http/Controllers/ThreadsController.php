@@ -51,7 +51,7 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
         request()->validate([
             'title' => ['required', new SpamFree],
@@ -107,17 +107,18 @@ class ThreadsController extends Controller
         // ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Thread $thread)
-    {
-        //
-    }
+   public function update($channel, Thread $thread)
+   {
+       // authorization
+       $this->authorize('update',$thread);
 
+       $thread->update(request()->validate([
+        'title' => ['required', new SpamFree],
+        'body' => ['required', new SpamFree]
+        ]));
+
+        return $thread;
+   }
     /**
      * Remove the specified resource from storage.
      *

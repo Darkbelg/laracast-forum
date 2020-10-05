@@ -16,7 +16,7 @@ use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * A basic feature test example.

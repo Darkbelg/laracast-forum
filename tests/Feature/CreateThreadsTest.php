@@ -12,7 +12,7 @@ use Tests\TestCase;
 class CreateThreadsTest extends TestCase
 {
 
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_guests_may_not_create_threads()
     {
@@ -25,8 +25,8 @@ class CreateThreadsTest extends TestCase
 
     public function test_new_user_must_first_confirm_their_email_address_before_creating_threads()
     {
-        $this->publishThread([],create('App\User',['email_verified_at' => null]))
-        ->assertRedirect('/email/verify');
+        $this->publishThread([], create('App\User', ['email_verified_at' => null]))
+            ->assertRedirect('/email/verify');
     }
 
     public function test_an_authenticated_user_can_create_new_forum_threads()
@@ -47,25 +47,25 @@ class CreateThreadsTest extends TestCase
     public function test_a_thread_requires_a_title()
     {
         $this->publishThread(['title' => null])
-        ->assertSessionHasErrors('title');
+            ->assertSessionHasErrors('title');
     }
 
     public function test_a_thread_requires_a_body()
     {
         $this->publishThread(['body' => null])
-        ->assertSessionHasErrors('body');
+            ->assertSessionHasErrors('body');
     }
 
     public function test_a_thread_requires_a_channel()
     {
 
-        factory('App\Channel',2)->create();
+        factory('App\Channel', 2)->create();
 
         $this->publishThread(['channel_id' => null])
-        ->assertSessionHasErrors('channel_id');
+            ->assertSessionHasErrors('channel_id');
 
         $this->publishThread(['channel_id' => 9999])
-        ->assertSessionHasErrors('channel_id');
+            ->assertSessionHasErrors('channel_id');
     }
 
     public function test_a_thread_requires_a_unique_slug()
@@ -115,8 +115,8 @@ class CreateThreadsTest extends TestCase
 
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('threads',['id' => $thread->id]);
-        $this->assertDatabaseMissing('replies',['id' => $reply->id]);
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
 
 
         // $this->assertDatabaseMissing('activities',[
@@ -128,15 +128,15 @@ class CreateThreadsTest extends TestCase
         //     'subject_type' =>get_class($reply)
         //     ]);
         //Following line has the same wanted function as the two statemens above.
-        $this->assertEquals(0,Activity::count());
+        $this->assertEquals(0, Activity::count());
     }
-    
-    public function publishThread($overrides,$user = null)
+
+    public function publishThread($overrides, $user = null)
     {
         $this->signIn($user);
 
-        $thread = make('App\Thread',$overrides);
+        $thread = make('App\Thread', $overrides);
 
-        return $this->post('/threads',$thread->toArray());
+        return $this->post('/threads', $thread->toArray());
     }
 }

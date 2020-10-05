@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class NotificationsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp(): void
     {

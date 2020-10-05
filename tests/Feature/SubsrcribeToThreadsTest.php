@@ -10,7 +10,7 @@ use Tests\TestCase;
 class SubsrcribeToThreadsTest extends TestCase
 {
 
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_a_user_can_subscribe_to_threads()
     {
