@@ -49,6 +49,7 @@
     </script>
 
     @yield('header')
+    @stack('scripts')
 </head>
 
 <body>
@@ -62,6 +63,7 @@
         {{-- <flash message="Temporary message"></flash> --}}
         {{-- <flash message=""></flash> --}}
     </div>
+    @yield('footer');
 </body>
 
 </html>
